@@ -27,8 +27,13 @@ class FernetHasher:
     
     @classmethod
     def create_key(cls, archive=False):
-        value = cls._get_random_string
+        value = cls._get_random_string()
+        #Essa linha pega a string aleatória (value), a codifica para o formato utf-8 com value.encode('utf-8'), e então aplica o algoritmo de hash SHA-256 (usado para gerar um valor de hash único e de comprimento fixo) usando hashlib.sha256().
+
+        #.digest() retorna o hash resultante como uma sequência de bytes.
         hasher = hashlib.sha256(value.encode('utf-8')).digest()
+
+        #Aqui, o hash gerado (hasher) é codificado para o formato Base64 usando base64.b64encode(). O Base64 é uma forma de representar dados binários (como um hash) em uma string ASCII, tornando-o legível e mais fácil de armazenar.
         key = base64.b64encode(hasher)
         if archive:
             return key, cls.archive_key(key)
@@ -45,7 +50,7 @@ class FernetHasher:
         with open(cls.KEY_DIR / arq, "wb") as file:
             file.write(key)
 
-        return cls.KEY_DIR / file
+        return cls.KEY_DIR / arq
     
     def encrypt(self, value):
         if not isinstance(value, bytes):

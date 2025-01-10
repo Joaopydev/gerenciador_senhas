@@ -1,4 +1,5 @@
 import sys, os
+
 sys.path.append(os.path.abspath(os.curdir))
 
 from models.password import Password
@@ -11,7 +12,7 @@ match action:
         if len(Password.get()) == 0:
             key, path = FernetHasher.create_key(archive=True)
             print("Sua chave foi criada com sucesso, salve-a com cuidado.")
-            print(f"Chave: {key.decode("utf-8")}")
+            print(f'Chave: {key.decode("utf-8")}')
             if path:
                 print("Chave salva no arquivo, lembre-se de remover o arquivo após transferi-lo")
                 print(f"Caminho: {path}")
@@ -31,6 +32,7 @@ match action:
         data = Password.get()
 
         for i in data:
+            print(i)
             if domain in i["domain"]:
                 password = fernet_user.decrypt(i["password"])
         
@@ -38,3 +40,5 @@ match action:
             print(f"Sua senha: {password}")
         else:
             print("Nenhuma senha encontrada para o domínio")
+
+            
